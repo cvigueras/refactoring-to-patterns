@@ -4,82 +4,47 @@ namespace RefactoringToPatterns.CommandPattern
 {
     public class MarsRover
     {
-        private int _x;
-        private int _y;
+        public int X;
+        public int Y;
+        public bool ObstacleFound;
         private char _direction;
-        private readonly string _availableDirections = "NESW";
-        private readonly string[] _obstacles;
-        private bool _obstacleFound;
+        public readonly string[] Obstacles;
+
+        private readonly Movement _movement;
 
         public MarsRover(int x, int y, char direction, string[] obstacles)
         {
-            _x = x;
-            _y = y;
+            X = x;
+            Y = y;
             _direction = direction;
-            _obstacles = obstacles;
-        }
-        
-        public string GetState()
-        {
-            return !_obstacleFound ? $"{_x}:{_y}:{_direction}" : $"O:{_x}:{_y}:{_direction}";
+            Obstacles = obstacles;
+            _movement = Movement.Create(this);
         }
 
         public void Execute(string commands)
         {
-            foreach(char command in commands)
+            foreach (var command in commands)
             {
-                if (command == 'M')
+                switch (command)
                 {
-                    switch (_direction)
+                    case 'M':
                     {
-                        case 'E':
-                            _obstacleFound = _obstacles.Contains($"{_x + 1}:{_y}");
-                            // check if rover reached plateau limit or found an obstacle
-                            _x = _x < 9 && !_obstacleFound ? _x += 1 : _x;
-                            break;
-                        case 'S':
-                            _obstacleFound = _obstacles.Contains($"{_x}:{_y + 1}");
-                            // check if rover reached plateau limit or found an obstacle
-                            _y = _y < 9 && !_obstacleFound ? _y += 1 : _y;
-                            break;
-                        case 'W':
-                            _obstacleFound = _obstacles.Contains($"{_x - 1}:{_y}");
-                            // check if rover reached plateau limit or found an obstacle
-                            _x = _x > 0 && !_obstacleFound ? _x -= 1 : _x;
-                            break;
-                        case 'N':
-                            _obstacleFound = _obstacles.Contains($"{_x}:{_y - 1}");
-                            // check if rover reached plateau limit or found an obstacle
-                            _y = _y > 0 && !_obstacleFound ? _y -= 1 : _y;
-                            break;
+                        var movement = _movement.Movements[_direction];
+                        movement.Move();
+                        break;
                     }
-                }
-                else if(command == 'L')
-                {
-                    // get new direction
-                    var currentDirectionPosition = _availableDirections.IndexOf(_direction);
-                    if (currentDirectionPosition != 0)
-                    {
-                        _direction = _availableDirections[currentDirectionPosition-1];
-                    }
-                    else
-                    {
-                        _direction = _availableDirections[3];
-                    }
-                } else if (command == 'R')
-                {
-                    // get new direction
-                    var currentDirectionPosition = _availableDirections.IndexOf(_direction);
-                    if (currentDirectionPosition != 3)
-                    {
-                        _direction = _availableDirections[currentDirectionPosition+1];
-                    }
-                    else
-                    {
-                        _direction = _availableDirections[0];
-                    }
+                    case 'L':
+                        _direction = _movement.GetLeftDirection(_direction);
+                        break;
+                    case 'R':
+                        _direction = _movement.GetRightDirection(_direction);
+                        break;
                 }
             }
+        }
+        public string GetState()
+        {
+            return !ObstacleFound ? $"{X}:{Y}:{_direction}" : $"O:{X}:{Y}:{_direction}";
         }
     }
 }
