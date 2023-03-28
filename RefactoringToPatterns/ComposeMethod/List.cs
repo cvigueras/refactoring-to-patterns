@@ -1,45 +1,58 @@
-using System;
-using System.Linq;
-using System.Web;
-
 namespace RefactoringToPatterns.ComposeMethod
 {
     public class List
     {
-
         private readonly bool _readOnly;
         private int _size;
-        private Object[] _elements;
+        private object[] _elements;
 
         public List(bool readOnly)
         {
             _readOnly = readOnly;
             _size = 0;
-            _elements = new Object[_size];
+            _elements = new object[_size];
         }
 
-        public void Add(Object element) {
-            if(!_readOnly) {
-                int newSize = _size + 1;
+        public void Add(object element)
+        {
+            if (_readOnly) return;
 
-                if(newSize > _elements.Length) {
-                    Object[] newElements = new Object[_elements.Length + 10];
+            if(GetNewSize() > _elements.Length)
+            {
+                var newElements = CreateNewElements();
 
-                    for (int i = 0; i < _size; i++)
-                        newElements[i] = _elements[i];
-
-                    _elements = newElements;
-                }
-
-                _elements[_size++] = element;
+                AssignNewElements(newElements);
             }
+
+            InsertElement(element);
+        }
+
+        private void InsertElement(object element)
+        {
+            _elements[_size++] = element;
+        }
+
+        private void AssignNewElements(object[] newElements)
+        {
+            for (var i = 0; i < _size; i++)
+                newElements[i] = _elements[i];
+
+            _elements = newElements;
+        }
+
+        private object[] CreateNewElements()
+        {
+            return new object[_elements.Length + 10];
+        }
+
+        private int GetNewSize()
+        {
+            return _size + 1;
         }
 
         public object[] Elements()
         {
             return _elements;
         }
-
     }
-
 }

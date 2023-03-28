@@ -1,4 +1,3 @@
-using System;
 using System.Linq;
 using Xunit;
 
@@ -13,7 +12,7 @@ namespace RefactoringToPatterns.ComposeMethod.Tests
             
             list.Add(1);
             
-            Object[] expectedElements = { };
+            object[] expectedElements = { };
             Assert.Equal(expectedElements, list.Elements());
         }
         
@@ -24,7 +23,7 @@ namespace RefactoringToPatterns.ComposeMethod.Tests
             
             list.Add(1);
             
-            Object[] expectedElements = { 1, null, null, null, null, null, null, null, null, null };
+            object[] expectedElements = { 1, null, null, null, null, null, null, null, null, null };
             Assert.Equal(expectedElements, list.Elements());
         }
         
@@ -33,12 +32,12 @@ namespace RefactoringToPatterns.ComposeMethod.Tests
         {
             var list = new List(false);
 
-            foreach (int value in Enumerable.Range(1, 11))
+            foreach (var value in Enumerable.Range(1, 11))
             {
                 list.Add(value);
             }
 
-            Object[] expectedElements = { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, null, null, null, null, null, null, null, null, null };
+            object[] expectedElements = { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, null, null, null, null, null, null, null, null, null };
             Assert.Equal(expectedElements, list.Elements());
         }
     }
