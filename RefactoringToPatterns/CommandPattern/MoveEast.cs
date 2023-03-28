@@ -2,11 +2,6 @@ using System.Linq;
 
 namespace RefactoringToPatterns.CommandPattern
 {
-    public interface IMove
-    {
-        void Move();
-    }
-
     public class MoveEast : IMove
     {
         private readonly MarsRover _marsRover;
