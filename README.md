@@ -1,2 +1,2 @@
 # refactoring-to-patterns
-# Exercices to practice
+Exercices to practice
