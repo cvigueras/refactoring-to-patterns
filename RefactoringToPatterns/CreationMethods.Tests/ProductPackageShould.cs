@@ -7,7 +7,7 @@ namespace RefactoringToPatterns.CreationMethods.Tests
         [Fact]
         public void CreateAProductPackageWithOnlyInternet()
         {
-            var productPackage = new ProductPackage("100MB");
+            var productPackage = new ProductPackage(Internet.Create("100MB"));
 
             Assert.True(productPackage.HasInternet());
             Assert.False(productPackage.HasVOIP());
@@ -17,7 +17,8 @@ namespace RefactoringToPatterns.CreationMethods.Tests
         [Fact]
         public void CreateWithInternetAndVoip()
         {
-            var productPackage = new ProductPackage("100MB", 91233788);
+            var productPackage = new ProductPackage(Internet.Create("100MB"),
+                telephone:Telephone.Create("91233788"));
 
             Assert.True(productPackage.HasInternet());
             Assert.True(productPackage.HasVOIP());
@@ -27,7 +28,9 @@ namespace RefactoringToPatterns.CreationMethods.Tests
         [Fact]
         public void CreateWithInternetAndTv()
         {
-            var productPackage = new ProductPackage("100MB", new[] {"LaLiga", "Estrenos"});
+            var tvChannels = new[] { "LaLiga", "Estrenos" };
+            var productPackage = new ProductPackage(Internet.Create("100MB"),
+                Television.Create(tvChannels));
 
             Assert.True(productPackage.HasInternet());
             Assert.False(productPackage.HasVOIP());
@@ -37,11 +40,53 @@ namespace RefactoringToPatterns.CreationMethods.Tests
         [Fact]
         public void CreateWithInternetVoipAndTv()
         {
-            var productPackage = new ProductPackage("100MB", 91233788, new[] {"LaLiga", "Estrenos"});
+            var tvChannels = new[] {"LaLiga", "Estrenos"};
+            var productPackage = new ProductPackage(Internet.Create("100MB"), 
+                Television.Create(tvChannels), Telephone.Create("91233788"));
 
             Assert.True(productPackage.HasInternet());
             Assert.True(productPackage.HasVOIP());
             Assert.True(productPackage.HasTv());
+        }
+
+        [Fact]
+        public void CreateWithInternetAndMobile()
+        {
+            var productPackage = new ProductPackage(Internet.Create("100MB"),
+                telephone: Telephone.Create(mobileNumber: "678987654"));
+
+            Assert.True(productPackage.HasInternet());
+            Assert.True(productPackage.HasMobile());
+            Assert.False(productPackage.HasVOIP());
+            Assert.False(productPackage.HasTv());
+        }
+
+        [Fact]
+        public void CreateWithInternetMobileAndTv()
+        {
+            var tvChannels = new[] { "LaLiga", "Estrenos" };
+            var productPackage = new ProductPackage(Internet.Create("100MB"),
+                Television.Create(tvChannels),
+                Telephone.Create(mobileNumber: "678987654"));
+
+            Assert.True(productPackage.HasInternet());
+            Assert.True(productPackage.HasMobile());
+            Assert.True(productPackage.HasTv());
+            Assert.False(productPackage.HasVOIP());
+        }
+
+        [Fact]
+        public void CreateWithInternetMobileLandLineAndTv()
+        {
+            var tvChannels = new[] { "LaLiga", "Estrenos" };
+            var productPackage = new ProductPackage(Internet.Create("100MB"),
+                Television.Create(tvChannels),
+                Telephone.Create("968765432", "678987654"));
+
+            Assert.True(productPackage.HasInternet());
+            Assert.True(productPackage.HasMobile());
+            Assert.True(productPackage.HasTv());
+            Assert.True(productPackage.HasVOIP());
         }
     }
 }

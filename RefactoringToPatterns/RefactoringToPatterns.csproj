@@ -59,7 +59,10 @@
     <Compile Include="ComposeMethod.Tests\ListShould.cs" />
     <Compile Include="ComposeMethod\List.cs" />
     <Compile Include="CreationMethods.Tests\ProductPackageShould.cs" />
+    <Compile Include="CreationMethods\Internet.cs" />
     <Compile Include="CreationMethods\ProductPackage.cs" />
+    <Compile Include="CreationMethods\Telephone.cs" />
+    <Compile Include="CreationMethods\Television.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
